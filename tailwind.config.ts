@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'custom-aqua': '#97e8e1',
+        'custom-yellow': '#fadd91',
+        'custom-coral': '#ff8077',
       },
     },
   },
