@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { start_realtime, resetAudio, InputState, eventEmitter } from "./main";
+import { start_realtime, resetAudio, InputState, eventEmitter } from "@/app/components/main"
 
 const RealtimeUI = () => {
   const [inputState, setInputState] = useState<InputState>(

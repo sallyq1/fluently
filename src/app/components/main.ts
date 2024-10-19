@@ -1,7 +1,7 @@
 // src/main.ts
 import { EventEmitter } from "eventemitter3";
-import { Player } from "./player";
-import { Recorder } from "./recorder";
+import { Player } from "@/app/components/player";
+import { Recorder } from "@/app/components/recorder";
 import { LowLevelRTClient, SessionUpdateMessage } from "rt-client";
 
 let realtimeStreaming: LowLevelRTClient;

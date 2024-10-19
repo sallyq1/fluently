@@ -5,7 +5,7 @@ import RealtimeUI from "./RealtimeUI";
 export default function Home() {
   return (
 <div>
-<RealtimeUI/>
+
 </div>   
   )
 };
