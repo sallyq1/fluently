@@ -8,15 +8,20 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        'custom-aqua': '#97e8e1',
-        'custom-yellow': '#fadd91',
-        'custom-coral': '#ff8077',
+        "custom-aqua": "#1c7f81",
+        "custom-yellow": "#fadd91",
+        "custom-coral": "#ff8077",
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/typography"), // Add this line if you installed the typography plugin
+  ],
 };
 export default config;
