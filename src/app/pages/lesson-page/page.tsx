@@ -5,7 +5,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div><RealtimeUI/></div>
+    <div>Lesson page</div>
   )
 }
 
