@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { start_realtime, resetAudio, InputState, eventEmitter } from "@/app/components/main"
+import { start_realtime, resetAudio, InputState, eventEmitter } from "./main";
 
 const RealtimeUI = () => {
   const [inputState, setInputState] = useState<InputState>(
@@ -28,13 +28,13 @@ const RealtimeUI = () => {
   }, []);
 
   const handleStartClick = async () => {
-    setInputState(InputState.Working);
+    // setInputState(InputState.Working);
     try {
       await start_realtime();
-      setInputState(InputState.ReadyToStop);
+      // setInputState(InputState.ReadyToStop);
     } catch (error) {
       console.log(error);
-      setInputState(InputState.ReadyToStart);
+      // setInputState(InputState.ReadyToStart);
     }
   };
 

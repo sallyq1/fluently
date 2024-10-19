@@ -1,15 +1,18 @@
-"use client";
+// "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  start_realtime,
-  resetAudio,
-  InputState,
-  eventEmitter,
-} from "@/app/components/main";
-import RealtimeUI from "@/app/RealtimeUI";
+// import React, { useState, useEffect } from "react";
+// import { Player } from "@/app/player";
+// import { Recorder } from "@/app/recorder";
+// import { LowLevelRTClient, SessionUpdateMessage } from "rt-client";
+// import {
+//   start_realtime,
+//   resetAudio,
+//   InputState,
+//   eventEmitter,
+// } from "@/app/main";
+// import "@/app/globals.css";
 
-// const lesson = () => {
+// const LessonPage = () => {
 //   const [inputState, setInputState] = useState<InputState>(
 //     InputState.ReadyToStart
 //   );
@@ -93,9 +96,14 @@ import RealtimeUI from "@/app/RealtimeUI";
 //   );
 // };
 
-// export default lesson;
+// export default LessonPage;
 
-const page = () => {
+"use client";
+
+import RealtimeUI from "../../components/RealtimeUI";
+import React, { useState, useEffect } from "react";
+
+const LessonPage = () => {
   return (
     <div>
       <RealtimeUI />
@@ -103,4 +111,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default LessonPage;
