@@ -7,6 +7,7 @@ class PlaybackWorklet extends AudioWorkletProcessor {
   }
 
   handleMessage(event) {
+    console.log("Received message", event.data);
     if (event.data === null) {
       this.buffer = [];
       return;
@@ -15,6 +16,7 @@ class PlaybackWorklet extends AudioWorkletProcessor {
   }
 
   process(inputs, outputs, parameters) {
+    console.log("Processing", inputs, outputs, parameters);
     const output = outputs[0];
     const channel = output[0];
 
