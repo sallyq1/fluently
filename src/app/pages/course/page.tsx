@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const page = () => {
+const Course = () => {
   return (
     <div className="flex justify-center">
       <div className="">
@@ -30,4 +30,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Course;
