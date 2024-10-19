@@ -98,17 +98,85 @@
 
 // export default LessonPage;
 
-"use client";
+'use client';
+import { useState } from 'react';
 
-import RealtimeUI from "../../components/RealtimeUI";
-import React, { useState, useEffect } from "react";
+export default function Chatbot() {
+  const [chatHistory, setChatHistory] = useState<{ user: string; bot: string }[]>([]);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [recording, setRecording] = useState(false);
+  const [loading, setLoading] = useState(false); // To manage bot's response delay
 
-const LessonPage = () => {
+  // Predefined sequence of user messages
+  const userMessages = [
+    "Hola",
+    "Bien, y tu?",
+    "My favorite fruit is apples"
+  ];
+
+  // Predefined bot responses
+  const predefinedResponses: { [key: string]: string } = {
+    "Hola": "Como estas?",
+    "Bien, y tu?": "Muy bien, gracias! Hoy aprenderemos sobre frutas en español. ¿Cuál es tu fruta favorita?",
+    "My favorite fruit is apples": "Apples in Spanish is called 'manzana'.",
+  };
+
+  // Function to simulate recording a voice message
+  const recordMessage = () => {
+    if (messageIndex >= userMessages.length) return;
+
+    // Set recording state to true and simulate recording for 2 seconds
+    setRecording(true);
+    setTimeout(() => {
+      const userMessage = userMessages[messageIndex];
+      
+      // Update chat history with user's message
+      setChatHistory([...chatHistory, { user: userMessage, bot: '...' }]); // Bot's response will come later
+
+      setRecording(false); // End recording after 2 seconds
+      setLoading(true); // Show loading while bot is "thinking"
+
+      // After 2 more seconds, show the bot's response
+      setTimeout(() => {
+        const botResponse = predefinedResponses[userMessage] || "I don't understand. Please follow the conversation flow.";
+
+        // Update the chat history with the bot's actual response
+        setChatHistory(prevHistory => prevHistory.map((chat, index) =>
+          index === prevHistory.length - 1 ? { ...chat, bot: botResponse } : chat
+        ));
+
+        setMessageIndex(messageIndex + 1); // Move to the next message in the sequence
+        setLoading(false); // Stop showing loading
+      }, 2000); // 2-second delay for bot response
+    }, 2000); // 2-second delay for recording
+  };
+
   return (
-    <div>
-      <RealtimeUI />
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-50">
+      <h1 className="text-4xl font-bold text-center mb-4">Voice-Recording Chatbot</h1>
+
+      <div className="w-full max-w-lg p-6 bg-white rounded-lg shadow-md">
+        <div className="mb-4">
+          <div className="h-64 overflow-y-auto border rounded-lg p-4">
+            {chatHistory.map((chat, index) => (
+              <div key={index} className="mb-4">
+                <p className="font-bold">User:</p>
+                <p>{chat.user}</p>
+                <p className="font-bold mt-2">Bot:</p>
+                <p>{chat.bot}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={recordMessage}
+          className={`w-full py-2 rounded-lg ${recording ? 'bg-red-500' : 'bg-blue-500'} text-white`}
+          disabled={recording || loading} // Disable button while recording or bot is responding
+        >
+          {recording ? 'Recording...' : loading ? 'Bot is typing...' : 'Record'}
+        </button>
+      </div>
     </div>
   );
-};
-
-export default LessonPage;
+}
