@@ -18,10 +18,12 @@ const Course = () => {
               </button>
             </div>
             <div className="border shadow-lg rounded-lg flex flex-col justify-center items-center p-2">
-              <Image src="/coffee-shop.svg" width={150} height={200} alt="" />
-              <button className="mt-2 bg-custom-aqua text-white font-bold rounded-full p-2 w-1/2 hover:shadow-lg">
+              <Image src="/fruits.svg" width={150} height={200} alt="" />
+              <a href="/pages/lesson">
+              <button className="mt-2 bg-custom-aqua text-white font-bold rounded-full p-2 w-56 hover:shadow-lg">
                 Continue
               </button>
+              </a>
             </div>
           </div>
         </div>

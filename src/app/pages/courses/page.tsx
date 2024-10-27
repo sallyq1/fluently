@@ -30,9 +30,15 @@ const Courses = () => {
               />
               <h1 className="mt-2 text-4xl font-sans ml-4">{language.name}</h1>
             </div>
-            <button className="mt-2 bg-custom-aqua text-white font-bold rounded-full p-2 w-3/4 hover:shadow-lg">
-              Continue
-            </button>
+
+
+            <a href="/pages/course" className="">
+              <button className="mt-2 bg-custom-aqua text-white font-bold rounded-full p-2 w-56  hover:shadow-lg">
+                Continue
+              </button>
+            </a>
+
+
           </div>
         ))}
       </div>

@@ -1,20 +1,23 @@
-// src/app/components/main.ts
-import { LowLevelRTClient, SessionUpdateMessage } from "rt-client";
+// src/main.ts
+import { EventEmitter } from "eventemitter3";
 import { Player } from "./player";
 import { Recorder } from "./recorder";
-import { EventEmitter } from "eventemitter3";
-
-export const eventEmitter = new EventEmitter();
+import { LowLevelRTClient, SessionUpdateMessage } from "rt-client";
 
 let realtimeStreaming: LowLevelRTClient;
 let audioRecorder: Recorder;
 let audioPlayer: Player;
 
-export async function start_realtime() {
-  const endpoint = process.env.NEXT_PUBLIC_AZURE_ENDPOINT!;
-  const apiKey = process.env.NEXT_PUBLIC_AZURE_APIKEY!;
-  const deploymentOrModel = process.env.NEXT_PUBLIC_AZURE_DEPLOYMENT!;
+const endpoint =
+  "https://parone-test-3.openai.azure.com/openai/realtime?api-version=2024-10-01-preview&deployment=gpt-4o-realtime-preview";
+const apiKey = "a883e853f73746d7ae35fa953468fc9a";
+const deploymentOrModel = "gpt-4o-realtime-preview";
+const temperature = 0.7;
+const voice = "alloy";
 
+const eventEmitter = new EventEmitter();
+
+async function start_realtime() {
   realtimeStreaming = new LowLevelRTClient(
     new URL(endpoint),
     { key: apiKey },
@@ -26,18 +29,16 @@ export async function start_realtime() {
     await realtimeStreaming.send(createConfigMessage());
   } catch (error) {
     console.log(error);
-    eventEmitter.emit(
-      "textUpdate",
-      "[Connection error]: Unable to send initial config message. Please check your endpoint and authentication details.\n"
+    throw new Error(
+      "[Connection error]: Unable to send initial config message. Please check your endpoint and authentication details."
     );
-    return;
   }
   console.log("sent");
   await Promise.all([resetAudio(true), handleRealtimeMessages()]);
 }
 
 function createConfigMessage(): SessionUpdateMessage {
-  return {
+  let configMessage: SessionUpdateMessage = {
     type: "session.update",
     session: {
       turn_detection: {
@@ -48,6 +49,15 @@ function createConfigMessage(): SessionUpdateMessage {
       },
     },
   };
+
+  if (!isNaN(temperature)) {
+    configMessage.session.temperature = temperature;
+  }
+  if (voice) {
+    configMessage.session.voice = voice;
+  }
+
+  return configMessage;
 }
 
 async function handleRealtimeMessages() {
@@ -56,9 +66,10 @@ async function handleRealtimeMessages() {
 
     switch (message.type) {
       case "session.created":
-        eventEmitter.emit("textUpdate", "<< Session Started >>\n");
+        // Notify React component
         break;
       case "response.audio_transcript.delta":
+        // Notify React component
         eventEmitter.emit("textUpdate", message.delta);
         break;
       case "response.audio.delta":
@@ -67,15 +78,16 @@ async function handleRealtimeMessages() {
         const pcmData = new Int16Array(bytes.buffer);
         audioPlayer.play(pcmData);
         break;
+
       case "input_audio_buffer.speech_started":
-        eventEmitter.emit("textUpdate", "<< Speech Started >>\n");
+        // Notify React component
         audioPlayer.clear();
         break;
       case "conversation.item.input_audio_transcription.completed":
-        eventEmitter.emit("textUpdate", " User: " + message.transcript + "\n");
+        // Notify React component
         break;
       case "response.done":
-        eventEmitter.emit("textUpdate", "--------------------\n");
+        // Notify React component
         break;
       default:
         consoleLog = JSON.stringify(message, null, 2);
@@ -87,6 +99,10 @@ async function handleRealtimeMessages() {
   }
   resetAudio(false);
 }
+
+/**
+ * Basic audio handling
+ */
 
 let recordingActive: boolean = false;
 let buffer: Uint8Array = new Uint8Array();
@@ -115,7 +131,7 @@ function processAudioRecordingBuffer(data: Buffer) {
   }
 }
 
-export async function resetAudio(startRecording: boolean) {
+async function resetAudio(startRecording: boolean) {
   recordingActive = false;
   if (audioRecorder) {
     audioRecorder.stop();
@@ -133,8 +149,10 @@ export async function resetAudio(startRecording: boolean) {
   }
 }
 
-export enum InputState {
+enum InputState {
   Working,
   ReadyToStart,
   ReadyToStop,
 }
+
+export { start_realtime, resetAudio, InputState, eventEmitter };

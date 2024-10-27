@@ -28,13 +28,13 @@ const RealtimeUI = () => {
   }, []);
 
   const handleStartClick = async () => {
-    // setInputState(InputState.Working);
+    setInputState(InputState.Working);
     try {
       await start_realtime();
-      // setInputState(InputState.ReadyToStop);
+      setInputState(InputState.ReadyToStop);
     } catch (error) {
       console.log(error);
-      // setInputState(InputState.ReadyToStart);
+      setInputState(InputState.ReadyToStart);
     }
   };
 
@@ -86,3 +86,4 @@ const RealtimeUI = () => {
 };
 
 export default RealtimeUI;
+
